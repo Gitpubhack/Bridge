@@ -1,0 +1,42 @@
+# FastAPI and ASGI
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Database
+sqlalchemy
+alembic
+aiosqlite
+
+# Authentication & Security
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+
+# HTTP Clients
+httpx
+aiohttp
+
+# Background Tasks
+apscheduler
+
+# Data Validation
+pydantic
+pydantic-settings
+
+# Crypto & Math
+cryptography
+
+# External API Clients
+openai
+websockets
+
+# Utilities
+python-dateutil
+pytz
+requests
+
+# Testing
+pytest
+pytest-asyncio
+pytest-mock

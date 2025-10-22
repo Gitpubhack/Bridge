@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Exchange</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">Bridge</h1>
+                <div class="user-info">
+                    <span class="user-level">Level 1</span>
+                    <span class="commission">0.1%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Screen -->
+            <div id="home-screen" class="screen active">
+                <!-- Wallet Card -->
+                <div class="wallet-card">
+                    <div class="card-header">
+                        <h2>Total Balance</h2>
+                        <div class="balance-amount">≈ 0 USDT</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="bonus-balance">Bonus: 0 USDT</div>
+                        <div class="level-badge">Level 1</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="showDeposit()">
+                        <span class="icon">💰</span>
+                        <span>Deposit</span>
+                    </button>
+                    <button class="action-btn" onclick="showWithdraw()">
+                        <span class="icon">💸</span>
+                        <span>Withdraw</span>
+                    </button>
+                    <button class="action-btn" onclick="showTrade()">
+                        <span class="icon">📈</span>
+                        <span>Trade</span>
+                    </button>
+                    <button class="action-btn" onclick="showBuy()">
+                        <span class="icon">🛒</span>
+                        <span>Buy</span>
+                    </button>
+                    <button class="action-btn" onclick="showPay()">
+                        <span class="icon">💳</span>
+                        <span>Pay (QR)</span>
+                    </button>
+                </div>
+
+                <!-- Secondary Actions -->
+                <div class="secondary-actions">
+                    <button class="secondary-btn" onclick="showMore()">
+                        <span>More</span>
+                        <span class="chevron">›</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Exchange Screen -->
+            <div id="exchange-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" onclick="showHome()">‹</button>
+                    <h2>Exchange Crypto</h2>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="showConverter()">Converter</button>
+                    <button class="tab" onclick="showBuySell()">Buy/Sell</button>
+                </div>
+
+                <div class="converter-panel">
+                    <div class="input-group">
+                        <label>You Send</label>
+                        <div class="input-row">
+                            <input type="number" placeholder="0.00" id="send-amount">
+                            <select id="send-currency">
+                                <option value="USDT">USDT</option>
+                                <option value="BTC">BTC</option>
+                                <option value="ETH">ETH</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="swap-icon">⇅</div>
+
+                    <div class="input-group">
+                        <label>You Receive</label>
+                        <div class="input-row">
+                            <input type="number" placeholder="0.00" id="receive-amount" readonly>
+                            <select id="receive-currency">
+                                <option value="BTC">BTC</option>
+                                <option value="USDT">USDT</option>
+                                <option value="ETH">ETH</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="rate-info">
+                        <span>Rate: 1 USDT ≈ 83.95 BTB</span>
+                    </div>
+
+                    <button class="exchange-btn" onclick="executeExchange()">Exchange</button>
+                </div>
+            </div>
+
+            <!-- Trade Screen -->
+            <div id="trade-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" onclick="showHome()">‹</button>
+                    <h2>Trade</h2>
+                </div>
+
+                <div class="trade-layout">
+                    <div class="chart-area">
+                        <div class="chart-placeholder">
+                            <span>Chart Area</span>
+                        </div>
+                    </div>
+
+                    <div class="orderbook-area">
+                        <h3>Order Book</h3>
+                        <div class="orderbook">
+                            <div class="orderbook-header">
+                                <span>Price</span>
+                                <span>Amount</span>
+                            </div>
+                            <div class="asks">
+                                <div class="order-row">
+                                    <span class="price">50,001</span>
+                                    <span class="amount">1.5</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="price">50,002</span>
+                                    <span class="amount">2.3</span>
+                                </div>
+                            </div>
+                            <div class="bids">
+                                <div class="order-row">
+                                    <span class="price">49,999</span>
+                                    <span class="amount">1.8</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="price">49,998</span>
+                                    <span class="amount">2.1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-form">
+                        <div class="order-tabs">
+                            <button class="order-tab active" onclick="setOrderSide('buy')">Buy</button>
+                            <button class="order-tab" onclick="setOrderSide('sell')">Sell</button>
+                        </div>
+
+                        <div class="order-inputs">
+                            <div class="input-group">
+                                <label>Amount</label>
+                                <input type="number" placeholder="0.00" id="order-amount">
+                                <div class="amount-slider">
+                                    <input type="range" min="0" max="100" value="0" id="amount-slider">
+                                    <div class="slider-labels">
+                                        <span>0%</span>
+                                        <span>25%</span>
+                                        <span>50%</span>
+                                        <span>75%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Price</label>
+                                <input type="number" placeholder="0.00" id="order-price">
+                            </div>
+
+                            <div class="balance-info">
+                                <span>Available: 1000 USDT</span>
+                            </div>
+
+                            <button class="buy-btn" onclick="placeOrder()">Buy BTC</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Games & Services Screen -->
+            <div id="games-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" onclick="showHome()">‹</button>
+                    <h2>Games & Services</h2>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" placeholder="Search services..." id="service-search">
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card" onclick="selectService('steam')">
+                        <div class="service-icon">🎮</div>
+                        <h3>Steam</h3>
+                        <p>Gaming platform</p>
+                    </div>
+
+                    <div class="service-card" onclick="selectService('playstation')">
+                        <div class="service-icon">🎯</div>
+                        <h3>PlayStation</h3>
+                        <p>Gaming console</p>
+                    </div>
+
+                    <div class="service-card" onclick="selectService('netflix')">
+                        <div class="service-icon">📺</div>
+                        <h3>Netflix</h3>
+                        <p>Streaming service</p>
+                    </div>
+
+                    <div class="service-card" onclick="selectService('spotify')">
+                        <div class="service-icon">🎵</div>
+                        <h3>Spotify</h3>
+                        <p>Music streaming</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assets Screen -->
+            <div id="assets-screen" class="screen">
+                <div class="screen-header">
+                    <button class="back-btn" onclick="showHome()">‹</button>
+                    <h2>Assets</h2>
+                </div>
+
+                <div class="assets-controls">
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" onclick="toggleAssetType('crypto')">Crypto</button>
+                        <button class="toggle-btn" onclick="toggleAssetType('fiat')">Fiat</button>
+                    </div>
+                    <div class="search-controls">
+                        <input type="text" placeholder="Search assets..." id="asset-search">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="hide-zero">
+                            Hide zero balances
+                        </label>
+                    </div>
+                </div>
+
+                <div class="assets-list">
+                    <div class="asset-item">
+                        <div class="asset-icon">₿</div>
+                        <div class="asset-info">
+                            <div class="asset-name">Bitcoin</div>
+                            <div class="asset-symbol">BTC</div>
+                        </div>
+                        <div class="asset-balance">
+                            <div class="balance-amount">0.001234</div>
+                            <div class="balance-value">≈ $50.00</div>
+                        </div>
+                        <div class="asset-status">
+                            <span class="available">Available</span>
+                            <span class="frozen">Frozen: 0</span>
+                        </div>
+                    </div>
+
+                    <div class="asset-item">
+                        <div class="asset-icon">Ξ</div>
+                        <div class="asset-info">
+                            <div class="asset-name">Ethereum</div>
+                            <div class="asset-symbol">ETH</div>
+                        </div>
+                        <div class="asset-balance">
+                            <div class="balance-amount">0.0</div>
+                            <div class="balance-value">≈ $0.00</div>
+                        </div>
+                        <div class="asset-status">
+                            <span class="available">Available</span>
+                            <span class="frozen">Frozen: 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item" onclick="showExchange()">
+                <span class="nav-icon">💱</span>
+                <span class="nav-label">Exchange</span>
+            </button>
+            <button class="nav-item" onclick="showTrade()">
+                <span class="nav-icon">📈</span>
+                <span class="nav-label">Trade</span>
+            </button>
+            <button class="nav-item home-nav" onclick="showHome()">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-item" onclick="showGames()">
+                <span class="nav-icon">🎮</span>
+                <span class="nav-label">Games</span>
+            </button>
+            <button class="nav-item" onclick="showAssets()">
+                <span class="nav-icon">💼</span>
+                <span class="nav-label">Assets</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modals -->
+    <div id="deposit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deposit</h3>
+                <button class="close-btn" onclick="closeModal('deposit-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Asset</label>
+                    <select id="deposit-asset">
+                        <option value="USDT">USDT</option>
+                        <option value="BTC">BTC</option>
+                        <option value="ETH">ETH</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Amount</label>
+                    <input type="number" placeholder="0.00" id="deposit-amount">
+                </div>
+                <button class="primary-btn" onclick="createDeposit()">Create Deposit</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdraw-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw</h3>
+                <button class="close-btn" onclick="closeModal('withdraw-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Asset</label>
+                    <select id="withdraw-asset">
+                        <option value="USDT">USDT</option>
+                        <option value="BTC">BTC</option>
+                        <option value="ETH">ETH</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Amount</label>
+                    <input type="number" placeholder="0.00" id="withdraw-amount">
+                </div>
+                <div class="input-group">
+                    <label>To Address</label>
+                    <input type="text" placeholder="Enter wallet address" id="withdraw-address">
+                </div>
+                <button class="primary-btn" onclick="createWithdraw()">Create Withdrawal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
