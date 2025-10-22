@@ -350,7 +350,7 @@
   left: 0;
   width: 414px;
   height: 263px;
-  background-image: url(./img/rectangle-1.svg);
+  background-color: #1b232a;
   background-size: 100% 100%;
 }
 
@@ -682,11 +682,14 @@
 }
 
 .home .main-navigation {
-  position: absolute;
+  position: fixed;
   top: 796px;
   left: 24px;
   width: 366px;
   height: 76px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   background-color: #1b232a;
   border-radius: 20px;
   box-shadow: 0px 12px 50px #161c2280;
@@ -1156,19 +1159,28 @@
         </div>
       </div>
       <div class="main-navigation">
-        <div class="group-13">
-          <div class="text-wrapper-16">Home</div>
-          <div class="text-wrapper-17">Markets</div>
-          <div class="text-wrapper-18">Wallets</div>
-          <div class="text-wrapper-19">Activity</div>
-          <div class="text-wrapper-20">Trades</div>
+        <div class="nav-item" onclick="navigate('index.html')">
+          <img src="images/Property 1=Home, Property 2=Active.png" alt="Home" class="nav-icon" />
         </div>
-        <img class="main-navigation-2" src="img/main-navigation-icons.svg" />
-        <img class="main-navigation-3" src="img/main-navigation-icons-4.svg" />
-        <img class="main-navigation-4" src="img/main-navigation-icons-5.svg" />
-        <img class="main-navigation-5" src="img/main-navigation-icons-2.svg" />
-        <img class="main-navigation-6" src="img/main-navigation-icons-3.svg" />
+        <div class="nav-item" onclick="navigate('markets.html')">
+          <img src="images/Property 1=Market, Property 2=Default.png" alt="Markets" class="nav-icon" />
+        </div>
+        <div class="nav-item" onclick="navigate('wallets.html')">
+          <img src="images/Property 1=Wallet, Property 2=Default.png" alt="Wallets" class="nav-icon" />
+        </div>
+        <div class="nav-item" onclick="navigate('activity.html')">
+          <img src="images/Property 1=Activity, Property 2=Default.png" alt="Activity" class="nav-icon" />
+        </div>
+        <div class="nav-item" onclick="navigate('trades.html')">
+          <img src="images/Property 1=Trades, Property 2=Default.png" alt="Trades" class="nav-icon" />
+        </div>
       </div>
+      
+      <script>
+        function navigate(page) {
+          window.location.href = page;
+        }
+      </script>
       <header class="header">
         <img class="top-mid-icons-6" src="img/mid-icons-2.svg" />
         <img class="top-mid-icons-7" src="img/mid-icons-5.svg" />
